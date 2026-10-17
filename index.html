@@ -390,7 +390,10 @@ a.mini{display:inline-block;text-decoration:none}
     <section class="sec" id="writing">
       <div class="sec-h"><h2>Writing</h2><span class="rule"></span></div>
       <div class="prose">
-        <p>Notes, experiments, research thoughts and things I'm building or trying to understand. (WIP)</p>
+        <p>Notes, experiments, research thoughts and things I'm building or trying to understand.</p>
+      </div>
+      <div class="acts">
+        <a class="btn pri" href="https://ssdunit.github.io/notes/" target="_blank" rel="noopener">Open notes</a>
       </div>
     </section>
 
@@ -728,7 +731,7 @@ if (pixelCat) {
       return { msg: dark ? 'too dark in here? the light switch is up there.' : 'too bright? the dark switch is up there.',
         acts: [{ t: dark ? 'go light' : 'go dark', fn: () => { setTheme(dark ? 'light' : 'dark'); pulseToggle(); } }] };
     },
-    writing: () => ({ msg: 'notes, experiments and research thoughts live here.', acts: [{ t: 'read writing', fn: () => go('writing') }] }),
+    writing: () => ({ msg: 'notes, experiments and research thoughts live here.', acts: [{ t: 'read writing', fn: () => go('writing') }, { t: 'open notes', href: 'https://ssdunit.github.io/notes/' }] }),
     interests: () => {
       const i = pick($$('#interests .tag').map(t => t.textContent));
       return { msg: 'fun fact: my human is into ' + i + '.', acts: [{ t: 'see interests', fn: () => { go('interests'); flashTag(i); } }] };
