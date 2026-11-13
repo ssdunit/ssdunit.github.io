@@ -1,0 +1,51 @@
+/* ---------- fixed pixel cat (bottom-right, always on screen) ---------- */
+.pixel-cat{position:fixed;right:18px;bottom:14px;z-index:80;display:flex;flex-direction:column;align-items:center;cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.pixel-cat:focus-visible .pc-scene{outline:2px solid var(--accent);outline-offset:4px;border-radius:6px}
+.pc-scene{position:relative;width:140px;height:145px}
+.pc-stage{position:absolute;left:14px;top:0;width:112px;height:112px;z-index:1;image-rendering:pixelated;image-rendering:-moz-crisp-edges;image-rendering:crisp-edges;filter:drop-shadow(0 8px 10px rgba(0,0,0,.28));transition:transform .35s var(--ease)}
+.pixel-cat:hover .pc-stage{transform:translateY(-4px)}
+.pixel-cat.flip .pc-stage{transform:scaleX(-1)}
+.pixel-cat.flip:hover .pc-stage{transform:scaleX(-1) translateY(-4px)}
+.pixel-cat.flip{--fx:-1} 
+.pc-sprite{position:absolute;left:0;bottom:0;width:112px;height:112px;background-repeat:no-repeat;opacity:0}
+.pc-cat{background-image:url(../assets/cat-light.png);background-size:1120px 112px;animation:pcIdle 1.7s steps(10) infinite;opacity:1}
+.pc-box{background-image:url(../assets/cat-box.png);background-size:448px 112px;animation:pcBoxFrames .9s steps(4) infinite}
+.pixel-cat.hiding .pc-cat{opacity:0}
+.pixel-cat.hiding .pc-box{opacity:1}
+.pixel-cat.pounce .pc-stage{animation:pcPounce .28s var(--ease)}
+@keyframes pcIdle{from{background-position:0 0}to{background-position:-1120px 0}}
+@keyframes pcBoxFrames{from{background-position:0 0}to{background-position:-448px 0}}
+@keyframes pcPounce{0%{transform:scaleX(var(--fx,1)) translateY(0) scale(1)}40%{transform:scaleX(var(--fx,1)) translateY(6px) scale(.92,1.06)}100%{transform:scaleX(var(--fx,1)) translateY(0) scale(1)}}
+.pc-hint{margin-top:2px;font:400 9.5px/1 var(--mono);color:var(--faint);letter-spacing:.04em;opacity:0;transition:opacity .25s;white-space:nowrap}
+.pixel-cat:hover .pc-hint,.pixel-cat:focus-visible .pc-hint{opacity:.85}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) .pc-cat{background-image:url(../assets/cat-dark.png);background-size:672px 112px;animation:pcIdleDrac 1.1s steps(6) infinite}
+}
+:root[data-theme="dark"] .pc-cat{background-image:url(../assets/cat-dark.png);background-size:672px 112px;animation:pcIdleDrac 1.1s steps(6) infinite}
+@keyframes pcIdleDrac{from{background-position:0 0}to{background-position:-672px 0}}
+@media (max-width:640px){
+  .pixel-cat{right:10px;bottom:8px;transform:scale(.72);transform-origin:bottom right}
+}
+@media (prefers-reduced-motion:reduce){
+  .pc-cat,.pc-box{animation:none;background-position:0 0}
+}
+
+/* ---------- cat helper bubble ---------- */
+.cat-bubble{position:fixed;right:18px;bottom:172px;z-index:81;width:max-content;max-width:min(272px,calc(100vw - 28px));padding:12px 14px;background:var(--panel);border:1px solid var(--line2);border-radius:8px;box-shadow:0 12px 28px -14px rgba(0,0,0,.35);font:400 12.5px/1.45 var(--mono);color:var(--text);opacity:0;visibility:hidden;transform:translateY(6px);transition:opacity .25s,transform .35s var(--ease),visibility 0s .35s}
+.cat-bubble.show{opacity:1;visibility:visible;transform:none;transition-delay:0s}
+.cat-bubble{cursor:pointer;transition:opacity .25s,transform .35s var(--ease),border-color .25s,visibility 0s .35s}
+.cat-bubble.show{transition:opacity .25s,transform .35s var(--ease),border-color .25s,visibility 0s}
+.cat-bubble:hover{border-color:var(--hover)}
+.cat-bubble:hover::after{border-color:var(--hover)}
+.cat-bubble::after{content:"";position:absolute;right:64px;bottom:-6px;width:10px;height:10px;background:var(--panel);border-right:1px solid var(--line2);border-bottom:1px solid var(--line2);transform:rotate(45deg)}
+.cb-msg{padding-right:18px}
+.cb-x{position:absolute;top:6px;right:6px;display:grid;place-items:center;width:20px;height:20px;border:0;border-radius:4px;background:none;color:var(--faint);font:400 15px/1 var(--mono);cursor:pointer;transition:color .2s}
+.cb-x:hover{color:var(--hover)}
+.cb-acts{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+a.mini{display:inline-block;text-decoration:none}
+@keyframes catPulse{from{box-shadow:0 0 0 0 color-mix(in srgb,var(--accent) 55%,transparent)}to{box-shadow:0 0 0 14px transparent}}
+.switch button.pulse{border-color:var(--accent);color:var(--accent);animation:catPulse 1.1s ease-out 3}
+@keyframes tagFlash{0%,100%{background:transparent}30%{background:color-mix(in srgb,var(--accent) 22%,transparent)}}
+.tag.flash{border-color:var(--accent);color:var(--text);animation:tagFlash 1.6s ease 1}
+@media (max-width:640px){.cat-bubble{right:10px;bottom:126px}.cat-bubble::after{right:44px}}
+

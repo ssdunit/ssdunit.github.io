@@ -1,0 +1,43 @@
+/* ---------- nav: linear axis ---------- */
+.nav{--sp:0;--gx:16px;--gy:10px;position:fixed;top:calc(var(--sp) * var(--gy));left:calc(var(--sp) * var(--gx));right:calc(var(--sp) * var(--gx));z-index:50;overflow:hidden;border-radius:calc(var(--sp) * 14px);background:linear-gradient(180deg,rgba(255,255,255,calc(var(--sp) * .1)),rgba(255,255,255,0) 75%),color-mix(in srgb,var(--nav-bg) calc(40% + var(--sp) * 38%),transparent);-webkit-backdrop-filter:blur(22px) saturate(1.7);backdrop-filter:blur(22px) saturate(1.7);border-bottom:1px solid color-mix(in srgb,var(--text) calc(13% - var(--sp) * 13%),transparent);box-shadow:0 0 0 1px color-mix(in srgb,var(--text) calc(var(--sp) * 15%),transparent),inset 0 1px 0 rgba(255,255,255,calc(var(--sp) * .2)),0 calc(12px + var(--sp) * 10px) calc(32px + var(--sp) * 12px) calc(-14px - var(--sp) * 4px) rgba(0,0,0,calc(.28 + var(--sp) * .17));will-change:top,left,right}
+.nav-row{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;height:75px;padding:0 40px}
+
+.brand{justify-self:start;display:inline-flex;align-items:center;gap:11px;text-decoration:none;color:var(--text)}
+.dial{width:26px;height:26px;color:var(--muted);transition:color .25s}
+.brand:hover .dial{color:var(--hover)}
+.dial #dialG{transform-origin:14px 14px;transform:rotate(var(--gear-turn,0deg));transition:transform .35s var(--ease)}
+.brand:hover .dial #dialG{transform:rotate(calc(var(--gear-turn,0deg) + 18deg))}
+.dial .nd{stroke:var(--accent)}
+.brand .nm{font:1000 20px/1 var(--nav-font);letter-spacing:.01em;white-space:nowrap}
+@keyframes dim{50%{opacity:.4}}
+
+.links{position:relative;display:flex;gap:2px;justify-self:center}
+.links a{position:relative;padding:9px 16px;font:400 18px/1 var(--nav-font);letter-spacing:.02em;color:var(--muted);text-decoration:none;white-space:nowrap;transition:color .25s}
+.links a::after{content:"";position:absolute;left:16px;right:16px;bottom:3px;height:2px;border-radius:2px;background:var(--accent);opacity:.55;transform:scaleX(0);transform-origin:left;transition:transform .45s var(--ease),opacity .25s,background .25s}
+.links a:hover{color:var(--hover)}
+.links a:hover::after{transform:scaleX(1);background:var(--hover)}
+.links a[aria-current]{color:var(--text)}
+.links a[aria-current]::after{opacity:1;transform:scaleX(1);box-shadow:none}
+
+.tools{justify-self:end;display:flex;align-items:center;gap:18px;font:400 14px/1 var(--mono);color:var(--faint)}
+.ro{display:flex;align-items:baseline;gap:16px;white-space:nowrap}
+.ro-sec{min-width:17ch;white-space:pre;color:var(--text)}
+.ro-sec i{font-style:normal}
+.ro-sec .pr{color:var(--accent)}
+.ro-sec .pc{display:inline-block;width:.6em;height:1.1em;margin-left:1px;vertical-align:-.22em;background:var(--accent);animation:curBlink 1s steps(1) infinite}
+.ro-sec.busy .pc{animation:none}
+.ro b{display:inline-block;min-width:5ch;font-weight:500;color:var(--muted);font-variant-numeric:tabular-nums;text-align:right}
+.switch{display:flex;align-items:center}
+.switch button{position:relative;display:grid;place-items:center;width:34px;height:34px;border:1px solid var(--line2);border-radius:50%;background:var(--panel);color:var(--muted);cursor:pointer;transition:background .25s,color .25s,border-color .25s}
+.switch button:hover{color:var(--accent);border-color:var(--accent)}
+.switch svg{position:absolute;width:17px;height:17px;transition:transform .35s var(--ease),opacity .25s}
+.switch .sun{opacity:0;transform:rotate(-60deg) scale(.6)}
+.switch .moon{opacity:1;transform:rotate(0) scale(1)}
+.switch button[aria-pressed="true"] .sun{opacity:1;transform:rotate(0) scale(1)}
+.switch button[aria-pressed="true"] .moon{opacity:0;transform:rotate(60deg) scale(.6)}
+
+.axis{position:relative;height:2px;overflow:hidden;background:var(--line);margin-inline:calc(var(--sp) * 14px);border-radius:1px}
+
+.axis-in{position:absolute;inset:0}
+.trace{position:absolute;inset:0;background:var(--accent);transform-origin:left;transform:scaleX(0);will-change:transform}
+
