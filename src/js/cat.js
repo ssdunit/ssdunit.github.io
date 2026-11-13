@@ -8,8 +8,7 @@ const CONTACT_KINDS = ['mail', 'phone', 'github', 'linkedin', 'twitter'];
 export function initCat() {
 const pixelCat = $('#pixelCat'), bubble = $('#catBubble');
 if (pixelCat) {
-  let busy = false, idleTimer = null, bubbleTimer = null, bag = [], last = '';
-
+  let busy = false, idleTimer = null, bubbleTimer = null, sleepTimer = null, bag = [], last = '';
   const contact = k => site.contact.find(c => c.id === k);
   const pick = arr => arr[Math.floor(Math.random() * arr.length)];
   const kinds = ['mail', 'phone', 'github', 'linkedin', 'twitter', 'theme', 'writing', 'interests'].filter(k => !CONTACT_KINDS.includes(k) || contact(k));
@@ -83,18 +82,30 @@ if (pixelCat) {
   bubble.addEventListener('focusin', () => clearTimeout(bubbleTimer));
   bubble.addEventListener('mouseleave', () => { if (bubble.classList.contains('show')) bubbleTimer = setTimeout(hide, 3000); });
   addEventListener('keydown', e => { if (e.key === 'Escape') hide(); });
+  const SLEEP_MS = 10000;
 
+  function sleep() {
+    // don't doze off mid-play or while the bubble is open
+    if (busy || bubble.classList.contains('show')) return wake();
+    pixelCat.classList.remove('flip');   // the Zs would be mirrored if flipped
+    pixelCat.classList.add('sleeping');
+  }
+  function wake() {
+    pixelCat.classList.remove('sleeping');
+    clearTimeout(sleepTimer);
+    sleepTimer = setTimeout(sleep, SLEEP_MS);
+  }
   function scheduleLookAround() {
     clearTimeout(idleTimer);
     idleTimer = setTimeout(() => {
-      if (!busy && !RM) pixelCat.classList.toggle('flip', Math.random() < 0.5);
+      if (!busy && !RM && !pixelCat.classList.contains('sleeping')) pixelCat.classList.toggle('flip', Math.random() < 0.5);
       scheduleLookAround();
     }, 6000 + Math.random() * 6000);
   }
 
   function playWithCat() {
     if (busy) return;
-    busy = true; hide();
+    busy = true; hide(); wake();
     pixelCat.classList.add('pounce');
     setTimeout(() => pixelCat.classList.remove('pounce'), RM ? 0 : 280);
     setTimeout(() => pixelCat.classList.add('hiding'), RM ? 0 : 120);
@@ -102,6 +113,7 @@ if (pixelCat) {
     setTimeout(() => {
       pixelCat.classList.remove('hiding');
       busy = false;
+      wake();               // restart the 10s countdown after the interaction
     }, RM ? 0 : 1500);
   }
 
@@ -109,6 +121,10 @@ if (pixelCat) {
   pixelCat.addEventListener('keydown', e => {
     if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); playWithCat(); }
   });
+  ['pointerenter', 'pointermove', 'pointerdown', 'focus'].forEach(evt =>
+    pixelCat.addEventListener(evt, wake)
+  );
   scheduleLookAround();
+  wake();
 }
 }

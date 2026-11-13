@@ -26,8 +26,27 @@
 @media (max-width:640px){
   .pixel-cat{right:10px;bottom:8px;transform:scale(.72);transform-origin:bottom right}
 }
+/* ---------- sleeping ---------- */
+.pixel-cat.sleeping .pc-cat{background-image:url(../assets/cat-light-sleep.png);animation-duration:2.5s}
+.pixel-cat.sleeping .pc-hint{opacity:0}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]) .pixel-cat.sleeping .pc-cat{background-image:url(../assets/cat-dark-sleep.png);animation-duration:1.5s}
+}
+:root[data-theme="dark"] .pixel-cat.sleeping .pc-cat{background-image:url(../assets/cat-dark-sleep.png);animation-duration:1.5s}
+/* floating Zs (two, offset so there's always one in view) */
+.pixel-cat.sleeping .pc-stage::before,
+.pixel-cat.sleeping .pc-stage::after{content:"";position:absolute;left:68px;top:40px;width:24px;height:24px;background:url(../assets/pc-z.png) center/contain no-repeat;image-rendering:pixelated;opacity:0;pointer-events:none;animation:pcZ 3.2s ease-in-out infinite}
+.pixel-cat.sleeping .pc-stage::after{animation-delay:-1.6s}
+@keyframes pcZ{
+  0%{opacity:0;transform:translate(0,0) scale(.7)}
+  20%{opacity:1}
+  70%{opacity:.9}
+  100%{opacity:0;transform:translate(18px,-40px) scale(1.25)}
+}
 @media (prefers-reduced-motion:reduce){
-  .pc-cat,.pc-box{animation:none;background-position:0 0}
+  .pc-cat,.pc-box,.pixel-cat.sleeping .pc-cat{animation:none;background-position:0 0}
+  .pixel-cat.sleeping .pc-stage::before{animation:none;opacity:.9}
+  .pixel-cat.sleeping .pc-stage::after{animation:none;opacity:0}
 }
 
 /* ---------- cat helper bubble ---------- */
